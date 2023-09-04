@@ -10,9 +10,19 @@ import androidx.compose.material.BottomSheetState
 import androidx.compose.material.BottomSheetValue
 import androidx.compose.material.Button
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.ExtendedFloatingActionButton
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.rememberBottomSheetScaffoldState
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.SheetState
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -20,42 +30,32 @@ import androidx.compose.ui.unit.dp
 import com.example.jetpackcomposetutorial.common.data.model.UserData
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
-@OptIn(ExperimentalMaterialApi::class)
-fun BottomSheet(userDataState: State<UserData?>) {
-    val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
-        bottomSheetState = BottomSheetState(BottomSheetValue.Collapsed)
+fun FAB(onClick: (value: Boolean)->Unit) {
+    ExtendedFloatingActionButton(
+        text = { androidx.compose.material3.Text("Show bottom sheet") },
+        icon = { Icon(Icons.Filled.Add, contentDescription = "") },
+        onClick = {
+            onClick(true)
+        }
     )
-    val coroutineScope = rememberCoroutineScope()
-
-    BottomSheetScaffold(
-        scaffoldState = bottomSheetScaffoldState,
-        sheetContent = {
-            Column(
-                content = {
-                    Text("Bottom Sheet")
-                    RenderBottomSheet(bottomSheetContent = userDataState)
-                },
-                modifier = Modifier
-                    .fillMaxSize()
-            )
-        },
-        sheetPeekHeight = 0.dp,
-        sheetShape = RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp),
-        sheetElevation = 10.dp
-    ) {
-        Column (modifier = Modifier.fillMaxWidth()) {
-            Button(onClick = {
-                coroutineScope.launch {
-                    if (bottomSheetScaffoldState.bottomSheetState.isCollapsed) {
-                        bottomSheetScaffoldState.bottomSheetState.expand()
-                    } else {
-                        bottomSheetScaffoldState.bottomSheetState.collapse()
-                    }
-                }
-            }) {
-                Text(text = "Open Bottom Sheet")
-            }
+}
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
+@Composable
+fun BottomSheet(showBottomSheet: Boolean,
+                userDataState: State<UserData?>,
+                onBottomSheetStateValueChange: (value: Boolean)->Unit) {
+    val sheetState = rememberModalBottomSheetState()
+    if (showBottomSheet) {
+        ModalBottomSheet(
+            onDismissRequest = {
+                onBottomSheetStateValueChange(false)
+            },
+            sheetState = sheetState
+        ) {
+            Text("Bottom Sheet")
+            RenderBottomSheet(bottomSheetContent = userDataState)
         }
     }
 }
@@ -69,6 +69,7 @@ fun RenderBottomSheet(
             .fillMaxWidth()
             .fillMaxHeight(0.98f)
     ) {
-        Text(text = "First Name: ${bottomSheetContent.value?.first_name}")
+        Text(text = "First Name: ${bottomSheetContent.value?.first_name}",
+            style = MaterialTheme.typography.displayMedium)
     }
 }
