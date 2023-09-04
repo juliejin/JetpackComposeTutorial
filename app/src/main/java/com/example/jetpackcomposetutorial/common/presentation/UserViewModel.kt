@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 class UserViewModel(private val userRepository: UserRepository): ViewModel() {
     val userListLivedata: StateFlow<List<UserData>>
         get() = _userListLivedata
-    val _userListLivedata = MutableStateFlow<List<UserData>>(listOf())
+    var _userListLivedata = MutableStateFlow<List<UserData>>(listOf())
     val userLiveData: MutableStateFlow<UserData?> by lazy {
         _userLiveData
     }
