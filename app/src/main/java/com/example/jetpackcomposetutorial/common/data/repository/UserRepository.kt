@@ -4,14 +4,21 @@ import android.content.Context
 import com.example.jetpackcomposetutorial.common.data.model.UserData
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.flow
 
 class UserRepository(private val context: Context) {
     fun fetchUserData() = flow {
         val result = parseData()
         emit(result)
+    }
+
+    fun fetchUserDataFlow() = callbackFlow {
+        fetchUserDataAsync {
+            trySend(it)
+        }
+        awaitClose {}
     }
 
     suspend fun fetchUserDataAsync(callback: (List<UserData>)->Unit) {

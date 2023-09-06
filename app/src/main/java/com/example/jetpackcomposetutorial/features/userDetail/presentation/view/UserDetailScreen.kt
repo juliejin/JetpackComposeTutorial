@@ -12,6 +12,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -26,9 +27,14 @@ fun UserDetailScreen(
 ) {
 /**
  * userViewModel.userLiveData.asStateFlow() will cause error
- * StateFlow.value should not be called within composition"
+ * "StateFlow.value should not be called within composition"
  * Because in composition you should be listening to events, not just reading the current one.
+ * with StateFlow.value you just read the current value
  * If you read only the current one then your view won't get recomposed after the value is changed
+ *
+ * Under the hood, the implementation of collectAsStateWithLifecycle uses the repeatOnLifecycle
+ *
+ * collectAsState will have app still collects from our Flow while it's in background.
  * */
     val userDataState = userViewModel.userLiveData.collectAsStateWithLifecycle()
     userViewModel.getUserDataById(userId)

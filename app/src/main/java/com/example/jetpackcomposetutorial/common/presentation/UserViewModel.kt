@@ -19,6 +19,7 @@ class UserViewModel(private val userRepository: UserRepository): ViewModel() {
 
     fun fetchUserData() {
         viewModelScope.launch {
+            //either fetchUserDataFlow() or fetchUserData() will work
             userRepository.fetchUserData().collect {
                 _userListLivedata.value = it
             }
