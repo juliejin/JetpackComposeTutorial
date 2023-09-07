@@ -7,6 +7,7 @@ import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.flow
+import java.io.File
 
 class UserRepository(private val context: Context) {
     fun fetchUserData() = flow {
@@ -21,7 +22,7 @@ class UserRepository(private val context: Context) {
         awaitClose {}
     }
 
-    suspend fun fetchUserDataAsync(callback: (List<UserData>)->Unit) {
+    fun fetchUserDataAsync(callback: (List<UserData>)->Unit) {
         val result = parseData()
         callback.invoke(result)
     }
