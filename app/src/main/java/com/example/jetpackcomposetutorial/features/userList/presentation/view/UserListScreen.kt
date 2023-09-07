@@ -1,6 +1,7 @@
 package com.example.jetpackcomposetutorial.features.userList.presentation.view
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,19 +23,21 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.jetpackcomposetutorial.MainActivity
 import com.example.jetpackcomposetutorial.common.data.model.UserData
 import com.example.jetpackcomposetutorial.common.presentation.UserViewModel
 
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
 fun UserListScreen(
     onUserClick: (UserData) -> Unit,
-    viewModel: UserViewModel
+    viewModel: UserViewModel = hiltViewModel(LocalContext.current as MainActivity)
 ) {
 
     /**
@@ -55,7 +58,7 @@ fun UserListScreen(
     val userDataState = viewModel.userListLivedata.collectAsStateWithLifecycle()
     viewModel.fetchUserData()
 
-    val userState = viewModel.userLiveData.collectAsStateWithLifecycle()
+    val userData = viewModel.userLiveData.collectAsStateWithLifecycle()
 
     var showBottomSheet by remember { mutableStateOf(false) }
 
@@ -65,7 +68,7 @@ fun UserListScreen(
          * Example of State Hoisting, where we pass a onclick handler to BottomSheet composable
          * and make it stateless
          */
-        BottomSheet(showBottomSheet = showBottomSheet, userDataState = userState) {
+        BottomSheet(showBottomSheet = showBottomSheet, userData.value) {
             showBottomSheet = it
         }
         LazyColumn(
@@ -88,8 +91,9 @@ fun UserListScreen(
                             modifier = Modifier
                                 .fillMaxSize()
                                 .clickable {
-                                    viewModel.getUserDataById(userDataState.value[index].id.toString())
-                                    showBottomSheet = true
+                                    //those 2 lines launches bottom sheet with user first name on it
+                                    //viewModel.getUserDataById(userDataState.value[index].id.toString())
+                                    //showBottomSheet = true
                                     onUserClick(userDataState.value[index])
                                 },
                             style = MaterialTheme.typography.displayMedium

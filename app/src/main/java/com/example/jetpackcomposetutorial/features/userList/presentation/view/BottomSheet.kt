@@ -3,7 +3,6 @@ package com.example.jetpackcomposetutorial.features.userList.presentation.view
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ExtendedFloatingActionButton
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
@@ -14,7 +13,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
 import androidx.compose.ui.Modifier
 import com.example.jetpackcomposetutorial.common.data.model.UserData
 
@@ -28,10 +26,10 @@ fun FAB(onClick: (value: Boolean)->Unit) {
         }
     )
 }
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BottomSheet(showBottomSheet: Boolean,
-                userDataState: State<UserData?>,
+                userData: UserData?,
                 onBottomSheetStateValueChange: (value: Boolean)->Unit) {
     val sheetState = rememberModalBottomSheetState()
     if (showBottomSheet) {
@@ -42,21 +40,21 @@ fun BottomSheet(showBottomSheet: Boolean,
             sheetState = sheetState
         ) {
             Text("Bottom Sheet")
-            RenderBottomSheet(bottomSheetContent = userDataState)
+            RenderBottomSheet(userData)
         }
     }
 }
 
 @Composable
 fun RenderBottomSheet(
-    bottomSheetContent: State<UserData?>
+    userData: UserData?
 ) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .fillMaxHeight(0.98f)
     ) {
-        Text(text = "First Name: ${bottomSheetContent.value?.first_name}",
+        Text(text = "First Name: ${userData?.first_name}",
             style = MaterialTheme.typography.displayMedium)
     }
 }

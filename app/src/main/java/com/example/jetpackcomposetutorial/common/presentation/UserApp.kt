@@ -2,6 +2,7 @@ package com.example.jetpackcomposetutorial.common.presentation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -20,13 +21,13 @@ fun UserApp() {
 
 @Composable
 fun UserNavHost(navController: NavHostController) {
-    val userViewModel = UserViewModel(UserRepository(LocalContext.current))
     NavHost(navController = navController, startDestination = "userList") {
 
         composable("userList") {
-            UserListScreen(onUserClick = {
+            UserListScreen(
+                onUserClick = {
                 navController.navigate("userDetail/${it.id}")
-            }, viewModel = userViewModel)
+            })
         }
 
         composable("userDetail/{userId}",
@@ -36,8 +37,8 @@ fun UserNavHost(navController: NavHostController) {
         ) { backStackEntry ->
             val userId = backStackEntry.arguments?.getString("userId")
             UserDetailScreen(
-                userViewModel,
-                userId ?: "",
+
+                userId = userId ?: "",
                 toDetails = {
                     navController.navigate("userDetail/$it")
                 }

@@ -4,15 +4,18 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.jetpackcomposetutorial.common.data.model.UserData
 import com.example.jetpackcomposetutorial.common.data.repository.UserRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class UserViewModel(private val userRepository: UserRepository): ViewModel() {
+@HiltViewModel
+class UserViewModel @Inject internal constructor(val userRepository: UserRepository): ViewModel() {
     val userListLivedata: StateFlow<List<UserData>>
         get() = _userListLivedata
     var _userListLivedata = MutableStateFlow<List<UserData>>(listOf())
-    val userLiveData: MutableStateFlow<UserData?> by lazy {
+    val userLiveData: StateFlow<UserData?> by lazy {
         _userLiveData
     }
     val _userLiveData = MutableStateFlow<UserData?>(null)
