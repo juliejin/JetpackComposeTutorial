@@ -6,5 +6,6 @@ data class UserData(
     val last_name: String,
     val email: String,
     val friends_user_ids: List<Int>,
-    val hobbies: List<String>
+    val hobbies: List<String>,
+    val icon_url: String
 )

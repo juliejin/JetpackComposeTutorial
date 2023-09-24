@@ -4,13 +4,15 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.CardDefaults
@@ -20,13 +22,15 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import coil.compose.AsyncImage
 import com.example.jetpackcomposetutorial.MainActivity
 import com.example.jetpackcomposetutorial.common.data.model.UserData
 import com.example.jetpackcomposetutorial.common.presentation.UserViewModel
@@ -60,7 +64,8 @@ fun UserListScreen(
 
     val userData = viewModel.userLiveData.collectAsStateWithLifecycle()
 
-    var showBottomSheet by remember { mutableStateOf(false) }
+    //replace with remember and you will find if you rotate screen it will dismiss bottomsheet
+    var showBottomSheet by rememberSaveable { mutableStateOf(false) }
 
     Scaffold(
     ) { it ->
@@ -83,13 +88,18 @@ fun UserListScreen(
                     colors = CardDefaults.cardColors(MaterialTheme.colorScheme.primaryContainer),
                     shape = RoundedCornerShape(10.dp),
                 ) {
-                    Column (
+                    Row (
                         modifier = Modifier.fillMaxSize()
                     ) {
+                        AsyncImage(
+                            modifier = Modifier.width(50.dp).height(50.dp),
+                            model = userDataState.value[index].icon_url,
+                            contentDescription = "user image",
+                            contentScale = ContentScale.Fit
+                        )
                         Text(
                             text = "${userDataState.value[index].first_name} ${userDataState.value[index].last_name}",
                             modifier = Modifier
-                                .fillMaxSize()
                                 .clickable {
                                     //those 2 lines launches bottom sheet with user first name on it
                                     //viewModel.getUserDataById(userDataState.value[index].id.toString())
