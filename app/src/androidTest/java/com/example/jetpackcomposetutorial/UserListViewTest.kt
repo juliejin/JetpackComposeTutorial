@@ -6,7 +6,7 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import com.example.jetpackcomposetutorial.common.data.repository.UserRepository
 import com.example.jetpackcomposetutorial.common.presentation.UserViewModel
-import com.example.jetpackcomposetutorial.features.userList.presentation.view.UserListScreen
+import com.example.jetpackcomposetutorial.com.example.jetpackcomposetutorial.common.presentation.features.userList.UserListScreen
 import org.junit.Rule
 import org.junit.Test
 

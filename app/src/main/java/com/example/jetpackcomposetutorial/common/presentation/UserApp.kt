@@ -1,17 +1,14 @@
 package com.example.jetpackcomposetutorial.common.presentation
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.jetpackcomposetutorial.common.data.repository.UserRepository
-import com.example.jetpackcomposetutorial.features.userDetail.presentation.view.UserDetailScreen
-import com.example.jetpackcomposetutorial.features.userList.presentation.view.UserListScreen
+import com.example.jetpackcomposetutorial.com.example.jetpackcomposetutorial.common.presentation.features.userDetail.UserDetailScreen
+import com.example.jetpackcomposetutorial.com.example.jetpackcomposetutorial.common.presentation.features.userList.UserListScreen
 
 @Composable
 fun UserApp() {
@@ -27,7 +24,8 @@ fun UserNavHost(navController: NavHostController) {
             UserListScreen(
                 onUserClick = {
                 navController.navigate("userDetail/${it.id}")
-            })
+            },
+                paging = false)
         }
 
         composable("userDetail/{userId}",

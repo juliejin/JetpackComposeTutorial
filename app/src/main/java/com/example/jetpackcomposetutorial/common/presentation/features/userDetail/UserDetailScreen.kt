@@ -1,4 +1,4 @@
-package com.example.jetpackcomposetutorial.features.userDetail.presentation.view
+package com.example.jetpackcomposetutorial.com.example.jetpackcomposetutorial.common.presentation.features.userDetail
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column

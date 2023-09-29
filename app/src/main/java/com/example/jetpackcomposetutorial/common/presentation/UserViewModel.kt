@@ -2,6 +2,7 @@ package com.example.jetpackcomposetutorial.common.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
 import com.example.jetpackcomposetutorial.common.data.model.UserData
 import com.example.jetpackcomposetutorial.common.data.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,6 +16,11 @@ class UserViewModel @Inject internal constructor(val userRepository: UserReposit
     val userListLivedata: StateFlow<List<UserData>>
         get() = _userListLivedata
     var _userListLivedata = MutableStateFlow<List<UserData>>(listOf())
+
+    val userListPagingData: StateFlow<PagingData<UserData>>
+        get() = _userListPagingData
+    val _userListPagingData = MutableStateFlow<PagingData<UserData>>(PagingData.empty())
+
     val userLiveData: StateFlow<UserData?> by lazy {
         _userLiveData
     }
@@ -24,7 +30,15 @@ class UserViewModel @Inject internal constructor(val userRepository: UserReposit
         viewModelScope.launch {
             //either fetchUserDataFlow() or fetchUserData() will work
             userRepository.fetchUserData().collect {
-                _userListLivedata.value = it
+                _userListLivedata.value = it ?: listOf()
+            }
+        }
+    }
+
+    fun fetchUserData_pagination() {
+        viewModelScope.launch {
+            userRepository.fetchUserDataWithPagination().collect {
+                _userListPagingData.value = it
             }
         }
     }

@@ -1,4 +1,4 @@
-package com.example.jetpackcomposetutorial.features.userList.presentation.view
+package com.example.jetpackcomposetutorial.com.example.jetpackcomposetutorial.common.presentation.features.userList
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
