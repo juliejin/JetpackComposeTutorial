@@ -25,7 +25,7 @@ fun UserNavHost(navController: NavHostController) {
                 onUserClick = {
                 navController.navigate("userDetail/${it.id}")
             },
-                paging = false)
+                paging = true)
         }
 
         composable("userDetail/{userId}",

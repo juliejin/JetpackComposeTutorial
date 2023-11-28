@@ -85,7 +85,21 @@ fun UserListScreen(
             LazyColumn(
                 modifier = Modifier.fillMaxSize()
             ) {
-                items(userDataState.value.size) {index ->
+                /**
+                 * if you provide the key lambda, the compose will know that this entry is the same entry
+                 * - just with different content. If you do not provide this lambda - index in list
+                 * will be used as key. So any addition other than at the end of the list would trigger
+                 * a lot of recompositions. So it is more or less like a diff utils. You only have
+                 * to provide this, because content equality is handled by compose implicitly -
+                 * via equals of the data object.
+                 *
+                 * Because when new data is added or inserted, the changed Lazy column will only change
+                 * that specific item not the whole list. So it is less tricky and expensive of changing
+                 * data in recycler views.
+                 */
+                items(userDataState.value.size, key = { index ->
+                    userDataState.value[index].id
+                }) {index ->
                     Card(
                         modifier = Modifier
                             .fillMaxWidth()

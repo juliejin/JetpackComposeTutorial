@@ -3,6 +3,7 @@ package com.example.jetpackcomposetutorial.common.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.example.jetpackcomposetutorial.common.data.model.UserData
 import com.example.jetpackcomposetutorial.common.data.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -37,7 +38,7 @@ class UserViewModel @Inject internal constructor(val userRepository: UserReposit
 
     fun fetchUserData_pagination() {
         viewModelScope.launch {
-            userRepository.fetchUserDataWithPagination().collect {
+            userRepository.fetchUserDataWithPagination().cachedIn(viewModelScope).collect {
                 _userListPagingData.value = it
             }
         }
